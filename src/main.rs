@@ -76,7 +76,7 @@ fn finish_sound(i : u32){
         freq = 680.0;
     }
 
-    let source = SineWave::new(freq).take_duration(time::Duration::from_secs_f32(1.0)).amplify(0.20); 
+    let source = SineWave::new(freq).take_duration(time::Duration::from_secs_f32(1.0)).amplify(1.0); 
     sink.append(source);
 
     sink.sleep_until_end();
