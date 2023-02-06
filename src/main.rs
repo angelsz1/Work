@@ -4,8 +4,15 @@ use clap::Parser;
 
 #[derive(Parser)]
 struct Arguments{
+    #[arg(short='r',long="rounds", default_value_t = 1 )]
     rounds : u32,
+
+
+    #[arg(short='w',long="work", default_value_t = 45 )]
     work_time : u64,
+
+
+    #[arg(short='x',long="relax", default_value_t = 15 )]
     relax_time : u64,
 }
 
