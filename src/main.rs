@@ -38,14 +38,14 @@ fn loop_through_bar(bar : &ProgressBar){
     let len = ProgressBar::length(bar);
     
     for _ in 0..len.unwrap(){
-        bar.inc(1);
         thread::sleep(time::Duration::from_secs(1));
+        bar.inc(1);
     }
 
 }
 
 fn create_progress_bar(color : &str, duration : u64, message : &str) -> ProgressBar {
-    let pb = ProgressBar::new(duration);
+    let pb = ProgressBar::new(duration*60);
     let template = format!("{{msg}}\n[{{elapsed}}] {{bar:40.{}}} {}", color, message);
     pb.set_style(ProgressStyle::with_template(&template)
                  .unwrap());
