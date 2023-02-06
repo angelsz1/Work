@@ -2,6 +2,8 @@ use console::style;
 use indicatif::{ProgressBar,  style::ProgressStyle};
 use std::{time, thread};
 use clap::Parser;
+use rodio::{OutputStream, Sink};
+use rodio::source::{SineWave, Source};
 
 #[derive(Parser)]
 struct Arguments{
@@ -37,6 +39,7 @@ fn main() {
         ProgressBar::set_message(&bar, format!("Phase {}/{}", (i+1), args.rounds*2));
         loop_through_bar(&bar);
         ProgressBar::finish(&bar);
+        finish_sound(i);
     }
 
 }
@@ -57,6 +60,27 @@ fn create_progress_bar(color : &str, duration : u64, message : &str) -> Progress
     pb.set_style(ProgressStyle::with_template(&template)
                  .unwrap());
     return pb;
+}
+
+fn finish_sound(i : u32){
+    
+    let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+    let sink = Sink::try_new(&stream_handle).unwrap();
+
+    let freq : f32;
+
+    if i % 2 == 0 { //termino una ronda de trabajo
+        freq = 450.0;
+    }
+    else{
+        freq = 680.0;
+    }
+
+    let source = SineWave::new(freq).take_duration(time::Duration::from_secs_f32(1.0)).amplify(0.20); 
+    sink.append(source);
+
+    sink.sleep_until_end();
+
 }
 
 
